@@ -23,19 +23,21 @@ class FireflyAlgorithm():
         for i in range(self.n):
             for j in range(self.D):
                 self.populationArray[i][j] = rand.uniform(self.Lb, self.Ub)
-                self.functionArray[i] = func(self.populationArray[i][0], self.populationArray[i][1])
+            self.functionArray[i] = self.func(self.populationArray[i,:], self.D)
                 
     def update(self, i, j):
         scale = self.Ub - self.Lb
-        r = (self.populationArray[i][0] - self.populationArray[j][0])**2 + (self.populationArray[i][1] - self.populationArray[j][1])**2
+        r = 0
+        for k in range(self.D):
+            r += (self.populationArray[i][k] - self.populationArray[j][k])**2
         beta = self.beta0*math.exp(-self.gamma*r)
         for k in range(self.D):
             steps = (self.alpha*self.theta)*(rand.random() - 0.5)*scale
             self.tmpArray[k] = self.populationArray[i][k] + beta*(self.populationArray[j][k] - self.populationArray[i][k]) + steps
-        if(func(self.tmpArray[0], self.tmpArray[1]) < self.functionArray[i]):
+        if(self.func(self.tmpArray, self.D) < self.functionArray[i]):
             for k in range(self.D):
                 self.populationArray[i][k] = self.tmpArray[k]
-            self.functionArray[i] = func(self.tmpArray[0], self.tmpArray[1])
+            self.functionArray[i] = self.func(self.tmpArray, self.D)
             
     def doRun(self):
         self.init_FA()
@@ -45,5 +47,6 @@ class FireflyAlgorithm():
                 for j in range(self.n):
                     if(self.functionArray[i] > self.functionArray[j] and i != j):
                         self.update(i,j)
+            print(self.populationArray)
             print(self.functionArray)
         return self.functionArray.min()
