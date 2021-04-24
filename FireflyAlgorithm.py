@@ -1,6 +1,7 @@
 import numpy as np
 import random as rand
 import math
+import time
 
 class FireflyAlgorithm():
 
@@ -40,6 +41,7 @@ class FireflyAlgorithm():
             self.functionArray[i] = self.func(self.tmpArray, self.D)
             
     def doRun(self):
+        start = time.time()
         self.init_FA()
         for gen in range(self.iter_max):
             print("Generation ", gen+1)
@@ -49,4 +51,6 @@ class FireflyAlgorithm():
                         self.update(i,j)
             print(self.populationArray)
             print(self.functionArray)
+        end = time.time()
+        print("執行時間：%f 秒" % (end - start))
         return self.functionArray.min()
