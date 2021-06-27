@@ -3,7 +3,7 @@ import random as rand
 import math
 import time
 
-class FireflyAlgorithm():
+class FireflyAlgorithm:
 
     def __init__(self, D, Lb, Ub, n, alpha, beta0, gamma, theta, iter_max, func):
         self.D = D
